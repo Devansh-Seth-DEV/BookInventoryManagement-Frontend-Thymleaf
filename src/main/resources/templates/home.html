@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Home</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+<div th:replace="~{navbar :: navbar}"></div>
+
+<div class="home-container">
+    <h1>Welcome to Book Inventory System</h1>
+
+    <div class="slideshow-container">
+    	<img class="slide" th:src="@{/images/book1.png}" style="display: block;">
+    	<img class="slide" th:src="@{/images/book2.png}">
+    	<img class="slide" th:src="@{/images/book3.png}">
+    	<img class="slide" th:src="@{/images/book4.png}">
+	</div>
+</div>
+
+<script>
+    let index = 0;
+    const slides = document.getElementsByClassName("slide");
+
+    function showSlides() {
+        for (let i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+
+        slides[index].style.display = "block";
+
+        index++;
+        if (index >= slides.length) {
+            index = 0;
+        }
+
+        setTimeout(showSlides, 3000);
+    }
+
+    document.addEventListener("DOMContentLoaded", showSlides);
+</script>
+
+</body>
+</html>

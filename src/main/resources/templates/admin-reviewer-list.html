@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Reviewer List</title>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            background: #ffffff;
+            padding: 25px 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #222;
+            text-align: center;
+        }
+
+        .error {
+            color: red;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        th {
+            background-color: #2c3e50;
+            color: white;
+            padding: 14px;
+            text-align: left;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #eef5ff;
+        }
+
+        .empty {
+            text-align: center;
+            color: #666;
+            padding: 18px;
+        }
+
+        .null-value {
+            color: #888;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Reviewer List</h2>
+
+    <p th:if="${reviewerError}" th:text="${reviewerError}" class="error"></p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Reviewer ID</th>
+                <th>Name</th>
+                <th>Employed By</th>
+                <th>Total Review Count</th>
+                <th>Max Rating</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:if="${#lists.isEmpty(reviewers)}">
+                <td colspan="5" class="empty">No reviewers found</td>
+            </tr>
+            <tr th:each="reviewer : ${reviewers}">
+                <td th:text="${reviewer.reviewerId}">1</td>
+                <td th:text="${reviewer.name}">Name</td>
+                <td th:text="${reviewer.employedBy != null ? reviewer.employedBy : 'N/A'}">Employer</td>
+                <td th:text="${reviewer.totalReviewCount}">0</td>
+                <td th:text="${reviewer.maxRating != null ? reviewer.maxRating : 'N/A'}">N/A</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

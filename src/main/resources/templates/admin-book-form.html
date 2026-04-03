@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${formTitle}">Book Form</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+<div th:replace="~{navbar :: navbar}"></div>
+
+<div class="auth-container">
+    <div class="auth-box admin-form-box">
+
+        <h2 th:text="${formTitle}">Book Form</h2>
+
+        <form th:action="${formAction}" method="post">
+
+            <label>ISBN</label>
+            <input type="text" name="isbn" th:value="${book.isbn}"
+                   placeholder="e.g. 978-3-16-148410-0" required
+                   th:readonly="${formTitle == 'Edit Book'}">
+
+            <label>Title</label>
+            <input type="text" name="title" th:value="${book.title}"
+                   placeholder="Book Title" required>
+
+            <label>Description</label>
+            <textarea name="description" placeholder="Short description..."
+                      rows="3" th:text="${book.description}"></textarea>
+
+            <label>Category</label>
+            <input type="text" name="categoryName" th:value="${book.categoryName}"
+                   placeholder="e.g. Fiction">
+
+            <label>Publisher</label>
+            <input type="text" name="publisherName" th:value="${book.publisherName}"
+                   placeholder="e.g. Penguin">
+
+            <label>Edition</label>
+            <input type="text" name="edition" th:value="${book.edition}"
+                   placeholder="e.g. 3rd Edition">
+
+            <div class="form-actions">
+                <a th:href="@{/books}" class="btn-secondary-sm">Cancel</a>
+                <button type="submit" class="btn-primary-sm" th:text="${formTitle}">Submit</button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

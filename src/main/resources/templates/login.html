@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+<div th:replace="~{navbar :: navbar}"></div>
+
+<div class="auth-container">
+    <div class="auth-box">
+        <h2>Login</h2>
+
+        <form th:action="@{/login}" method="post">
+
+    <select id="roleSelect" name="roleNumber" required onchange="toggleLoginFields()">
+        <option value="">Select Role</option>
+        <option th:each="role : ${roles}"
+                th:value="${role.roleNumber}"
+                th:text="${role.permRole}">
+        </option>
+    </select>
+
+    <div id="loginFields">
+        <input type="text" name="username" placeholder="Username">
+        <input type="password" name="password" placeholder="Password">
+    </div>
+
+    <button type="submit">Login</button>
+</form>
+
+<script>
+function toggleLoginFields() {
+    let role = document.getElementById("roleSelect").value;
+    let fields = document.getElementById("loginFields");
+
+    // Assuming Guest roleNumber = 1
+    if(role == "1") {
+        fields.style.display = "none";
+    } else {
+        fields.style.display = "block";
+    }
+}
+</script>
+
+        <p>Don't have an account?</p>
+        <a th:href="@{/signup}" style="text-decoration: underline;">SignUp here</a>
+    </div>
+</div>
+
+</body>
+</html>

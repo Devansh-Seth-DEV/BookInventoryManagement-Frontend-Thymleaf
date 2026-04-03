@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Navbar</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+
+<body>
+<div class="navbar" th:fragment="navbar">
+
+    <div class="navbar-left">
+        <a th:href="@{/home}">Book inventory</a>
+    </div>
+
+    <div class="navbar-right">
+	
+		<a th:href="@{/books}" class="book-link">
+            BOOKS
+        </a>
+		
+        <!-- Profile Section -->
+        <div class="profile-section">
+            <img th:src="@{/images/generic pp.avif}" class="profile-icon">
+
+            <!-- Before login -->
+            <a th:if="${session.user == null}" th:href="@{/login}" class="profile-text">
+                Login/Signup
+            </a>
+
+            <!-- After login -->
+            <span th:if="${session.user != null}" th:text="${session.user}" class="profile-text"></span>
+        </div>
+
+        <!-- Cart -->
+        <a th:href="@{/cart}" class="cart-link">
+            🛒 Cart
+            <span class="cart-count">0</span>
+        </a>
+
+        <!-- Menu -->
+        <div class="dropdown">
+            <button>Menu ▼</button>
+            <div class="dropdown-content">
+                <a th:href="@{/books}">Books</a>
+                <a th:href="@{/inventory}">Inventory</a>
+                <a th:href="@{/reviewers}">Reviewers</a>
+                <a th:href="@{/issues}">Issues</a>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+</body>
+</html>

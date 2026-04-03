@@ -43,6 +43,8 @@ public class AdminReviewerController {
             List<AllBookReviewerResponseDTO> reviewerList =
                     reviewers != null ? Arrays.asList(reviewers) : Collections.emptyList();
 
+            reviewerList.sort((r1, r2) -> Integer.compare(r1.getReviewerId(), r2.getReviewerId()));
+
             model.addAttribute("reviewers", reviewerList);
 
         } catch (Exception e) {

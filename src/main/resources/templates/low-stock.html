@@ -14,32 +14,25 @@
         <h2>⚠ Low Stock Books</h2>
     </div>
 
-    <!-- Search Bar -->
     <input type="text" id="searchBar" placeholder="Search low stock books..."
            onkeyup="searchBooks()" class="search-bar">
 
-    <!-- SAME GRID -->
     <div class="book-grid">
 
-        <!-- SAME CARD DESIGN -->
         <div class="book-card" th:each="item : ${lowStock}">
             <img th:src="@{/images/book-placeholder.jpg}" class="book-img" alt="Book Cover">
 
-            <!-- SAME TITLE STYLE -->
             <h3 style="text-align:center;" th:text="${item.bookTitle}"></h3>
 
-            <!-- Replace description with stock info -->
             <p style="color:red; font-weight:bold;">
                 ⚠ Only <span th:text="${item.currentStock}"></span> left in stock
             </p>
 
-            <!-- Keep structure similar -->
             <div>
             <p><b>ISBN:</b> <span th:text="${item.isbn}"></span></p>
 
         </div>
 
-        <!-- EMPTY CASE -->
         <div th:if="${#lists.isEmpty(lowStock)}">
             <p>No low stock items found</p>
         </div>

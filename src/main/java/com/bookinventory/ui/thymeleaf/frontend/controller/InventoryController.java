@@ -26,57 +26,6 @@ public class InventoryController {
     @Value("${bims.backend.baseurl}")
     private String backendBaseUrl;
 
-    // ✅ Get all available inventory
-    @GetMapping("/inventory/available")
-    public String getAvailableInventory(Model model, HttpSession session) {
-
-        AvailableInventoryResponseDTO[] inventory =
-                restTemplate.getForObject(
-                        backendBaseUrl + "/api/inventory/available",
-                        AvailableInventoryResponseDTO[].class
-                );
-
-        model.addAttribute("inventory", inventory);
-
-        // Cart count logic (same as BookController)
-        @SuppressWarnings("unchecked")
-        List<CartItemDTO> cart = (List<CartItemDTO>) session.getAttribute("cart");
-
-        int cartCount = (cart != null)
-                ? cart.stream().mapToInt(CartItemDTO::getQuantity).sum()
-                : 0;
-
-        model.addAttribute("cartCount", cartCount);
-
-        return "inventory"; // Thymeleaf page name
-    }
-
-    // ✅ Get inventory by ID
-    @GetMapping("/inventory/{id}")
-    public String getInventoryById(@PathVariable("id") Integer id, Model model, HttpSession session) {
-
-        InventoryResponseDTO inventory =
-                restTemplate.getForObject(
-                        backendBaseUrl + "/api/inventory/" + id,
-                        InventoryResponseDTO.class
-                );
-
-        model.addAttribute("inventoryItem", inventory);
-
-        // Cart count
-        @SuppressWarnings("unchecked")
-        List<CartItemDTO> cart = (List<CartItemDTO>) session.getAttribute("cart");
-
-        int cartCount = (cart != null)
-                ? cart.stream().mapToInt(CartItemDTO::getQuantity).sum()
-                : 0;
-
-        model.addAttribute("cartCount", cartCount);
-
-        return "inventory-details"; // Thymeleaf page
-    }
-
-    // ✅ Get low stock items
     @GetMapping("/inventory/low-stock")
     public String getLowStock(Model model, HttpSession session) {
 

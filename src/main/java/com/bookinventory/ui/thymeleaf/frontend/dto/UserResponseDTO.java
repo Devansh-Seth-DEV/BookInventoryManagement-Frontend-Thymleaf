@@ -1,16 +1,24 @@
 package com.bookinventory.ui.thymeleaf.frontend.dto;
 
 public class UserResponseDTO {
-
+	private Integer userId;
     private String firstName;
     private String lastName;
     private String userName;
     private String phoneNumber;
     private String roleName;
-
+    
     public UserResponseDTO() {}
 
-    public String getFirstName() {
+    public Integer getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
+
+	public String getFirstName() {
         return firstName;
     }
 

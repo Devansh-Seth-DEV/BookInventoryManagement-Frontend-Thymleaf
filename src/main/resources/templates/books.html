@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Books</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+<div th:replace="~{navbar :: navbar}"></div>
+
+<div class="books-page">
+
+    <h2>All Books</h2>
+
+    <!-- Search Bar -->
+    <input type="text" id="searchBar" placeholder="Search books..."
+           onkeyup="searchBooks()" class="search-bar">
+
+    <!-- Books Grid -->
+    <div class="book-grid">
+
+        <div class="book-card" th:each="book : ${books}">
+            <img th:src="@{/images/book-placeholder.jpg}" class="book-img">
+
+            <h3 th:text="${book.title}"></h3>
+            <p th:text="${book.description}"></p>
+            <p><b>Category:</b> <span th:text="${book.categoryName}"></span></p>
+            <p><b>Publisher:</b> <span th:text="${book.publisherName}"></span></p>
+            <p><b>Edition:</b> <span th:text="${book.edition}"></span></p>
+
+            <button>Add to Cart</button>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+function searchBooks() {
+    let input = document.getElementById("searchBar").value.toLowerCase();
+    let cards = document.getElementsByClassName("book-card");
+
+    for (let i = 0; i < cards.length; i++) {
+        let title = cards[i].getElementsByTagName("h3")[0].innerText.toLowerCase();
+
+        if (title.includes(input)) {
+            cards[i].style.display = "block";
+        } else {
+            cards[i].style.display = "none";
+        }
+    }
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>My Cart</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+<div th:replace="~{navbar :: navbar}"></div>
+
+<div class="cart-page">
+
+    <h2>🛒 My Cart
+        <span class="cart-count-badge" th:text="'(' + ${totalItems} + ' items)'"></span>
+    </h2>
+
+    <!-- Empty Cart -->
+    <div th:if="${#lists.isEmpty(cartItems)}" class="cart-empty">
+        <p>Your cart is empty.</p>
+        <a th:href="@{/books}" class="btn-primary">Browse Books</a>
+    </div>
+
+    <!-- Cart Table -->
+    <div th:if="${!#lists.isEmpty(cartItems)}">
+        <table class="cart-table">
+            <thead>
+                <tr>
+                    <th>Book</th>
+                    <th>Category</th>
+                    <th>Publisher</th>
+                    <th>Edition</th>
+                    <th>Qty</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="item : ${cartItems}">
+                    <td>
+                        <strong th:text="${item.title}"></strong>
+                        <small th:text="${item.description}" class="book-desc-small"></small>
+                    </td>
+                    <td th:text="${item.categoryName}"></td>
+                    <td th:text="${item.publisherName}"></td>
+                    <td th:text="${item.edition}"></td>
+
+                    <!-- Quantity updater -->
+                    <td>
+                        <form th:action="@{/cart/update}" method="post" class="qty-form">
+                            <input type="hidden" name="isbn" th:value="${item.isbn}">
+                            <button type="submit" name="quantity" th:value="${item.quantity - 1}" class="qty-btn">−</button>
+                            <span class="qty-display" th:text="${item.quantity}"></span>
+                            <button type="submit" name="quantity" th:value="${item.quantity + 1}" class="qty-btn">+</button>
+                        </form>
+                    </td>
+
+                    <!-- Remove -->
+                    <td>
+                        <form th:action="@{/cart/remove}" method="post">
+                            <input type="hidden" name="isbn" th:value="${item.isbn}">
+                            <button type="submit" class="remove-btn">✕ Remove</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Cart Actions -->
+        <div class="cart-actions">
+            <form th:action="@{/cart/clear}" method="post">
+                <button type="submit" class="btn-danger">🗑 Clear Cart</button>
+            </form>
+            <a th:href="@{/books}" class="btn-secondary">← Continue Shopping</a>
+            <button class="btn-primary" onclick="alert('Checkout coming soon!')">Checkout →</button>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -12,6 +12,10 @@
 
     <h2>All Books</h2>
 
+    <!-- Flash Messages -->
+    <div th:if="${cartSuccess}" class="flash-success" th:text="${cartSuccess}"></div>
+    <div th:if="${cartError}"   class="flash-error"   th:text="${cartError}"></div>
+
     <!-- Search Bar -->
     <input type="text" id="searchBar" placeholder="Search books..."
            onkeyup="searchBooks()" class="search-bar">
@@ -20,36 +24,46 @@
     <div class="book-grid">
 
         <div class="book-card" th:each="book : ${books}">
-            <img th:src="@{/images/book-placeholder.jpg}" class="book-img">
+            <img th:src="@{/images/book-placeholder.jpg}" class="book-img" alt="Book Cover">
 
             <h3 th:text="${book.title}"></h3>
             <p th:text="${book.description}"></p>
-            <p><b>Category:</b> <span th:text="${book.categoryName}"></span></p>
+            <p><b>Category:</b>  <span th:text="${book.categoryName}"></span></p>
             <p><b>Publisher:</b> <span th:text="${book.publisherName}"></span></p>
-            <p><b>Edition:</b> <span th:text="${book.edition}"></span></p>
+            <p><b>Edition:</b>   <span th:text="${book.edition}"></span></p>
 
-            <button>Add to Cart</button>
+            <!-- Add to Cart form — hidden fields carry book data -->
+            <form th:action="@{/cart/add}" method="post">
+                <input type="hidden" name="isbn"          th:value="${book.isbn}">
+                <input type="hidden" name="title"         th:value="${book.title}">
+                <input type="hidden" name="description"   th:value="${book.description}">
+                <input type="hidden" name="categoryName"  th:value="${book.categoryName}">
+                <input type="hidden" name="publisherName" th:value="${book.publisherName}">
+                <input type="hidden" name="edition"       th:value="${book.edition}">
+                <button type="submit" class="add-cart-btn">🛒 Add to Cart</button>
+            </form>
         </div>
 
     </div>
-
 </div>
 
 <script>
 function searchBooks() {
-    let input = document.getElementById("searchBar").value.toLowerCase();
-    let cards = document.getElementsByClassName("book-card");
-
-    for (let i = 0; i < cards.length; i++) {
-        let title = cards[i].getElementsByTagName("h3")[0].innerText.toLowerCase();
-
-        if (title.includes(input)) {
-            cards[i].style.display = "block";
-        } else {
-            cards[i].style.display = "none";
-        }
+    const input = document.getElementById("searchBar").value.toLowerCase();
+    const cards = document.getElementsByClassName("book-card");
+    for (let card of cards) {
+        const title = card.getElementsByTagName("h3")[0].innerText.toLowerCase();
+        card.style.display = title.includes(input) ? "block" : "none";
     }
 }
+
+// Auto-hide flash messages after 3 s
+document.addEventListener("DOMContentLoaded", () => {
+    ["flash-success", "flash-error"].forEach(cls => {
+        const el = document.querySelector("." + cls);
+        if (el) setTimeout(() => el.style.display = "none", 3000);
+    });
+});
 </script>
 
 </body>

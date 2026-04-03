@@ -1,4 +1,4 @@
-package com.bims.frontend.dto;
+package com.bookinventory.ui.thymeleaf.frontend.dto;
 
 public class UserResponseDTO {
 

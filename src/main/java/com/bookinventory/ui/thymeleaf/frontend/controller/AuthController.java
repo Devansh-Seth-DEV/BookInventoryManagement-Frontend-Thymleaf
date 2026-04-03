@@ -1,4 +1,4 @@
-package com.bims.frontend.controller;
+package com.bookinventory.ui.thymeleaf.frontend.controller;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
-import com.bims.frontend.model.PermRole;
+import com.bookinventory.ui.thymeleaf.frontend.dto.UserResponseDTO;
+import com.bookinventory.ui.thymeleaf.frontend.model.PermRole;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -22,8 +24,9 @@ public class AuthController {
 
     @Autowired
     private RestTemplate restTemplate;
-
-    private final String ROLE_API = "http://localhost:8085/permrole";
+    
+    @Value("${bims.backend.baseurl}"+"/permrole")
+    private String ROLE_API;
 
     @GetMapping("/login")
     public String loginPage(Model model) {
@@ -57,7 +60,7 @@ public class AuthController {
 
             session.setAttribute("user", response.getUserName());
             session.setAttribute("role", response.getRoleName());
-            session.setAttribute("userId", response.getUserId());
+//            session.setAttribute("userId", response.getUserId());
 
             return "redirect:/";
 

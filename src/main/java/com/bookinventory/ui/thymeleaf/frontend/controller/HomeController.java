@@ -1,4 +1,4 @@
-	package com.bims.frontend.controller;
+	package com.bookinventory.ui.thymeleaf.frontend.controller;
 	
 	import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

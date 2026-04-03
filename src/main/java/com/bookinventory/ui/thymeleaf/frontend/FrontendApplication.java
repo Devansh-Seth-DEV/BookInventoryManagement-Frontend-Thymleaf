@@ -1,4 +1,4 @@
-package com.bims.frontend;
+package com.bookinventory.ui.thymeleaf.frontend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

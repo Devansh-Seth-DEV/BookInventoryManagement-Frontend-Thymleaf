@@ -1,4 +1,4 @@
-package com.bims.frontend.model;
+package com.bookinventory.ui.thymeleaf.frontend.model;
 
 public class PermRole {
 

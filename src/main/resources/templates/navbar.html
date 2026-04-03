@@ -9,7 +9,7 @@
 <div class="navbar" th:fragment="navbar">
 
     <div class="navbar-left">
-        <a th:href="@{/home}">Book inventory</a>
+        <a th:href="@{/home}">Book Inventory</a>
     </div>
 
     <div class="navbar-right">
@@ -19,12 +19,12 @@
 
         <!-- Profile -->
         <div class="profile-section">
-            <img th:src="@{/images/generic pp.avif}" class="profile-icon">
+            <img th:src="@{/images/generic pp.avif}" class="profile-icon" alt="Profile">
 
             <!-- Guest -->
             <a th:if="${session.user == 'Guest'}"
                th:href="@{/login}" class="profile-text">
-               Login/Signup
+               Login / Signup
             </a>
 
             <!-- Logged in -->
@@ -33,10 +33,14 @@
                   class="profile-text"></span>
         </div>
 
-        <!-- Cart only RegisteredUser -->
+        <!-- Cart — RegisteredUser only, shows live item count badge -->
         <a th:if="${session.role == 'RegisteredUser'}"
            th:href="@{/cart}" class="cart-link">
-           🛒 Cart
+            🛒 Cart
+            <span th:if="${cartCount != null and cartCount > 0}"
+                  class="cart-badge"
+                  th:text="${cartCount}">
+            </span>
         </a>
 
         <!-- Menu -->

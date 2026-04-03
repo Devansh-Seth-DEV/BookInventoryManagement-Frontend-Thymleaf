@@ -6,77 +6,62 @@
 </head>
 
 <body>
-<div class="navbar" th:fragment="navbar">
+	<div class="navbar" th:fragment="navbar">
 
-    <div class="navbar-left">
-        <a th:href="@{/home}">Book Inventory</a>
-    </div>
+		<div class="navbar-left">
+			<a th:href="@{/home}">Book Inventory</a>
+		</div>
 
-    <div class="navbar-right">
+		<div class="navbar-right">
 
-        <!-- Books visible to everyone -->
-        <a th:href="@{/books}" class="book-link">BOOKS</a>
+			<!-- Books visible to everyone -->
+			<a th:href="@{/books}" class="book-link">BOOKS</a>
 
-        <!-- Profile -->
-        <div class="profile-section">
-            <img th:src="@{/images/generic pp.avif}" class="profile-icon" alt="Profile">
+			<!-- Profile Section -->
+			<div class="profile-section">
+				<img th:src="@{/images/generic pp.avif}" class="profile-icon"
+					alt="Profile">
 
-            <!-- Guest -->
-            <a th:if="${session.user == 'Guest'}"
-               th:href="@{/login}" class="profile-text">
-               Login / Signup
-            </a>
+				<!-- Guest -->
+				<a th:if="${session.user == 'Guest'}" th:href="@{/login}"
+					class="profile-text"> Login / Signup </a>
 
-            <!-- Logged in -->
-            <span th:if="${session.user != 'Guest'}"
-                  th:text="${session.user}"
-                  class="profile-text"></span>
-        </div>
+				<!-- Logged In User -->
+				<span th:if="${session.user != 'Guest'}" th:text="${session.user}"
+					class="profile-text"> </span>
+			</div>
 
-        <!-- Cart — RegisteredUser only, shows live item count badge -->
-        <a th:if="${session.role == 'RegisteredUser'}"
-           th:href="@{/cart}" class="cart-link">
-            🛒 Cart
-            <span th:if="${cartCount != null and cartCount > 0}"
-                  class="cart-badge"
-                  th:text="${cartCount}">
-            </span>
-        </a>
+			<!-- Cart — RegisteredUser only -->
+			<a th:if="${session.role == 'RegisteredUser'}" th:href="@{/cart}"
+				class="cart-link"> 🛒 Cart <span
+				th:if="${cartCount != null and cartCount > 0}" class="cart-badge"
+				th:text="${cartCount}"> </span>
+			</a>
 
-        <!-- Menu -->
-        <div class="dropdown">
-            <button>Menu ▼</button>
-            <div class="dropdown-content">
+			<!-- Menu -->
+			<div class="dropdown">
+				<button>Menu ▼</button>
+				<div class="dropdown-content">
 
-                <a th:href="@{/books}">Books</a>
+					<a th:href="@{/books}">Books</a>
 
-                <!-- StoreOwner + Admin -->
-                <a th:if="${session.role == 'StoreOwner' or session.role == 'Admin'}"
-                   th:href="@{/inventory}">
-                   Inventory
-                </a>
+					<!-- StoreOwner + Admin -->
+					<a
+						th:if="${session.role == 'StoreOwner' or session.role == 'Admin'}"
+						th:href="@{/inventory}"> Inventory </a>
 
-                <!-- Admin only -->
-                <a th:if="${session.role == 'Admin'}"
-                   th:href="@{/reviewers}">
-                   Reviewers
-                </a>
+					<!-- Admin only -->
+					<a th:if="${session.role == 'Admin'}" th:href="@{/reviewers}">
+						Reviewers </a>
 
-                <a th:if="${session.role == 'Admin'}"
-                   th:href="@{/issues}">
-                   Issues
-                </a>
+					<!-- Logout -->
+					<a th:if="${session.user != 'Guest'}" th:href="@{/logout}">
+						Logout </a>
 
-                <!-- Logout -->
-                <a th:if="${session.user != 'Guest'}"
-                   th:href="@{/logout}">
-                   Logout
-                </a>
+				</div>
+			</div>
 
-            </div>
-        </div>
-
-    </div>
-</div>
+		</div>
+	</div>
 </body>
 </html>

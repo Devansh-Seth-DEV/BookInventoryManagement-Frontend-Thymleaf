@@ -1,71 +1,85 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Books</title>
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
+<title>Books</title>
+<link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
 
-<div th:replace="~{navbar :: navbar}"></div>
+	<div th:replace="~{navbar :: navbar}"></div>
 
-<div class="books-page">
+	<div class="books-page">
 
-    <div class="books-header">
-        <h2>All Books</h2>
-        <!-- Admin: Add New Book button above the grid -->
-        <a th:if="${session.role == 'Admin'}" th:href="@{/admin/books/add}" class="btn-add-book">
-            ＋ Add New Book
-        </a>
-    </div>
+		<div class="books-header">
+			<h2>All Books</h2>
+			<!-- Admin: Add New Book button above the grid -->
+			<a th:if="${session.role == 'Admin'}" th:href="@{/admin/books/add}"
+				class="btn-add-book"> ＋ Add New Book </a>
+		</div>
 
-    <!-- Flash Messages -->
-    <div th:if="${cartSuccess}" class="flash-success" th:text="${cartSuccess}"></div>
-    <div th:if="${cartError}"   class="flash-error"   th:text="${cartError}"></div>
-    <div th:if="${bookSuccess}" class="flash-success" th:text="${bookSuccess}"></div>
-    <div th:if="${bookError}"   class="flash-error"   th:text="${bookError}"></div>
+		<!-- Flash Messages -->
+		<div th:if="${cartSuccess}" class="flash-success"
+			th:text="${cartSuccess}"></div>
+		<div th:if="${cartError}" class="flash-error" th:text="${cartError}"></div>
+		<div th:if="${bookSuccess}" class="flash-success"
+			th:text="${bookSuccess}"></div>
+		<div th:if="${bookError}" class="flash-error" th:text="${bookError}"></div>
 
-    <!-- Search Bar -->
-    <input type="text" id="searchBar" placeholder="Search books..."
-           onkeyup="searchBooks()" class="search-bar">
+		<!-- Search Bar -->
+		<input type="text" id="searchBar" placeholder="Search books..."
+			onkeyup="searchBooks()" class="search-bar">
 
-    <!-- Books Grid -->
-    <div class="book-grid">
+		<!-- Books Grid -->
+		<div class="book-grid">
 
-        <div class="book-card" th:each="book : ${books}">
-            <img th:src="@{/images/book-placeholder.jpg}" class="book-img" alt="Book Cover">
+			<div class="book-card" th:each="book : ${books}">
+				<img th:src="@{/images/book-placeholder.jpg}" class="book-img"
+					alt="Book Cover">
 
-            <h3 th:text="${book.title}"></h3>
-            <p th:text="${book.description}"></p>
-            <p><b>Category:</b>  <span th:text="${book.categoryName}"></span></p>
-            <p><b>Publisher:</b> <span th:text="${book.publisherName}"></span></p>
-            <p><b>Edition:</b>   <span th:text="${book.edition}"></span></p>
+				<h3 th:text="${book.title}"></h3>
+				<p th:text="${book.description}"></p>
+				<div class="book-details">
+					<div>
+						<b>Category:</b> <span th:text="${book.categoryName}"></span>
+					</div>
+					<div>
+						<b>Publisher:</b> <span th:text="${book.publisherName}"></span>
+					</div>
+					<div>
+						<b>Edition:</b> <span th:text="${book.edition}"></span>
+					</div>
+				</div>
 
-            <!-- ADMIN: Edit + Remove buttons -->
-            <div th:if="${session.role == 'Admin'}" class="admin-card-actions">
-                <a th:href="@{/admin/books/edit(isbn=${book.isbn})}" class="btn-edit-book">✏️ Edit</a>
-                <form th:action="@{/admin/books/delete}" method="post" style="display:inline"
-                      onsubmit="return confirm('Remove \'' + /*[[${book.title}]]*/ '' + '\' from inventory?')">
-                    <input type="hidden" name="isbn" th:value="${book.isbn}">
-                    <button type="submit" class="btn-remove-book">🗑 Remove</button>
-                </form>
-            </div>
+				<!-- ADMIN: Edit + Remove buttons -->
+				<div th:if="${session.role == 'Admin'}" class="admin-card-actions">
+					<a th:href="@{/admin/books/edit(isbn=${book.isbn})}"
+						class="btn-edit-book">✏️ Edit</a>
+					<form th:action="@{/admin/books/delete}" method="post"
+						style="display: inline"
+						onsubmit="return confirm('Remove \'' + /*[[${book.title}]]*/ '' + '\' from inventory?')">
+						<input type="hidden" name="isbn" th:value="${book.isbn}">
+						<button type="submit" class="btn-remove-book">🗑 Remove</button>
+					</form>
+				</div>
 
-            <!-- NON-ADMIN: Add to Cart -->
-            <form th:if="${session.role != 'Admin'}" th:action="@{/cart/add}" method="post">
-                <input type="hidden" name="isbn"          th:value="${book.isbn}">
-                <input type="hidden" name="title"         th:value="${book.title}">
-                <input type="hidden" name="description"   th:value="${book.description}">
-                <input type="hidden" name="categoryName"  th:value="${book.categoryName}">
-                <input type="hidden" name="publisherName" th:value="${book.publisherName}">
-                <input type="hidden" name="edition"       th:value="${book.edition}">
-                <button type="submit" class="add-cart-btn">🛒 Add to Cart</button>
-            </form>
-        </div>
+				<!-- NON-ADMIN: Add to Cart -->
+				<form th:if="${session.role != 'Admin'}" th:action="@{/cart/add}"
+					method="post">
+					<input type="hidden" name="isbn" th:value="${book.isbn}"> <input
+						type="hidden" name="title" th:value="${book.title}"> <input
+						type="hidden" name="description" th:value="${book.description}">
+					<input type="hidden" name="categoryName"
+						th:value="${book.categoryName}"> <input type="hidden"
+						name="publisherName" th:value="${book.publisherName}"> <input
+						type="hidden" name="edition" th:value="${book.edition}">
+					<button type="submit" class="add-cart-btn">🛒 Add to Cart</button>
+				</form>
+			</div>
 
-    </div>
-</div>
+		</div>
+	</div>
 
-<script>
+	<script>
 function searchBooks() {
     const input = document.getElementById("searchBar").value.toLowerCase();
     const cards = document.getElementsByClassName("book-card");

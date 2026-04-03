@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Navbar</title>
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
+<title>Navbar</title>
+<link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 
 <body>
@@ -13,43 +13,66 @@
     </div>
 
     <div class="navbar-right">
-	
-		<a th:href="@{/books}" class="book-link">
-            BOOKS
-        </a>
-		
-        <!-- Profile Section -->
+
+        <!-- Books visible to everyone -->
+        <a th:href="@{/books}" class="book-link">BOOKS</a>
+
+        <!-- Profile -->
         <div class="profile-section">
             <img th:src="@{/images/generic pp.avif}" class="profile-icon">
 
-            <!-- Before login -->
-            <a th:if="${session.user == null}" th:href="@{/login}" class="profile-text">
-                Login/Signup
+            <!-- Guest -->
+            <a th:if="${session.user == 'Guest'}"
+               th:href="@{/login}" class="profile-text">
+               Login/Signup
             </a>
 
-            <!-- After login -->
-            <span th:if="${session.user != null}" th:text="${session.user}" class="profile-text"></span>
+            <!-- Logged in -->
+            <span th:if="${session.user != 'Guest'}"
+                  th:text="${session.user}"
+                  class="profile-text"></span>
         </div>
 
-        <!-- Cart -->
-        <a th:href="@{/cart}" class="cart-link">
-            🛒 Cart
-            <span class="cart-count">0</span>
+        <!-- Cart only RegisteredUser -->
+        <a th:if="${session.role == 'RegisteredUser'}"
+           th:href="@{/cart}" class="cart-link">
+           🛒 Cart
         </a>
 
         <!-- Menu -->
         <div class="dropdown">
             <button>Menu ▼</button>
             <div class="dropdown-content">
+
                 <a th:href="@{/books}">Books</a>
-                <a th:href="@{/inventory}">Inventory</a>
-                <a th:href="@{/reviewers}">Reviewers</a>
-                <a th:href="@{/issues}">Issues</a>
+
+                <!-- StoreOwner + Admin -->
+                <a th:if="${session.role == 'StoreOwner' or session.role == 'Admin'}"
+                   th:href="@{/inventory}">
+                   Inventory
+                </a>
+
+                <!-- Admin only -->
+                <a th:if="${session.role == 'Admin'}"
+                   th:href="@{/reviewers}">
+                   Reviewers
+                </a>
+
+                <a th:if="${session.role == 'Admin'}"
+                   th:href="@{/issues}">
+                   Issues
+                </a>
+
+                <!-- Logout -->
+                <a th:if="${session.user != 'Guest'}"
+                   th:href="@{/logout}">
+                   Logout
+                </a>
+
             </div>
         </div>
 
     </div>
-
 </div>
 </body>
 </html>

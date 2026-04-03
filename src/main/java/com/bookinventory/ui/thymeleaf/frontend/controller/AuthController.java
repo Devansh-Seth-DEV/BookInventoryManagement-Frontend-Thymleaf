@@ -25,12 +25,18 @@ public class AuthController {
     @Autowired
     private RestTemplate restTemplate;
     
-    @Value("${bims.backend.baseurl}"+"/permrole")
-    private String ROLE_API;
+    @Value("${bims.backend.baseurl}")
+    private String backendBaseUrl;
+
+    private String getRoleApi() {
+        return backendBaseUrl + "/permrole";
+    }
 
     @GetMapping("/login")
     public String loginPage(Model model) {
-        PermRole[] roles = restTemplate.getForObject(ROLE_API, PermRole[].class);
+        PermRole[] roles =
+                restTemplate.getForObject(getRoleApi(), PermRole[].class);
+
         model.addAttribute("roles", roles);
         return "login";
     }
@@ -45,33 +51,35 @@ public class AuthController {
         if(roleNumber == 1) {
             session.setAttribute("user", "Guest");
             session.setAttribute("role", "Guest");
-            return "redirect:/";
+            return "redirect:/home";
         }
 
-        // Call backend login API
-        String url = "http://localhost:8085/api/users/login";
+        // Backend login API
+        String url = backendBaseUrl + "/api/auth/login";
 
         Map<String, String> request = new HashMap<>();
         request.put("username", username);
         request.put("password", password);
 
         try {
-            UserResponseDTO response = restTemplate.postForObject(url, request, UserResponseDTO.class);
+            UserResponseDTO response =
+                    restTemplate.postForObject(url, request, UserResponseDTO.class);
 
             session.setAttribute("user", response.getUserName());
             session.setAttribute("role", response.getRoleName());
-//            session.setAttribute("userId", response.getUserId());
+            session.setAttribute("userId", response.getUserId());
 
-            return "redirect:/";
+            return "redirect:/home";
 
         } catch(Exception e) {
-            return "login?error=true";
+            return "redirect:/login?error=true";
         }
     }
 
     @GetMapping("/signup")
     public String signupPage(Model model) {
-        PermRole[] roles = restTemplate.getForObject(ROLE_API, PermRole[].class);
+        PermRole[] roles =
+                restTemplate.getForObject(getRoleApi(), PermRole[].class);
 
         List<PermRole> filtered = Arrays.stream(roles)
                 .filter(r -> !r.getPermRole().equalsIgnoreCase("Guest"))
@@ -83,14 +91,49 @@ public class AuthController {
     }
     
     @PostMapping("/signup")
-    public String signup(@RequestParam String username,
-                        @RequestParam String password,
-                        @RequestParam Integer roleNumber,
-                        HttpSession session) {
+    public String signup(@RequestParam String firstName,
+                         @RequestParam String lastName,
+                         @RequestParam String phoneNumber,
+                         @RequestParam String userName,
+                         @RequestParam String password,
+                         @RequestParam Integer roleNumber,
+                         HttpSession session) {
 
-        session.setAttribute("user", username);
-        session.setAttribute("role", roleNumber);
+        String url = backendBaseUrl + "/api/auth/signup";
 
-        return "redirect:/";
+        Map<String, Object> user = new HashMap<>();
+        user.put("firstName", firstName);
+        user.put("lastName", lastName);
+        user.put("phoneNumber", phoneNumber);
+        user.put("userName", userName);
+        user.put("password", password);
+
+        Map<String, Integer> role = new HashMap<>();
+        role.put("roleNumber", roleNumber);
+
+        user.put("permRole", role);
+
+        try {
+            restTemplate.postForObject(url, user, Object.class);
+
+            session.setAttribute("user", userName);
+
+            if(roleNumber == 2) {
+                session.setAttribute("role", "RegisteredUser");
+            } else if(roleNumber == 3) {
+                session.setAttribute("role", "StoreOwner");
+            }
+
+            return "redirect:/home";
+
+        } catch(Exception e) {
+            return "redirect:/signup?error=true";
+        }
+    }
+    
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/home";
     }
 }

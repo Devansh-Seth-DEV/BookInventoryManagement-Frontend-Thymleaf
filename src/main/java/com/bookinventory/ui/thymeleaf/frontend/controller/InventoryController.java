@@ -26,7 +26,7 @@ public class InventoryController {
     @Value("${bims.backend.baseurl}")
     private String backendBaseUrl;
 
-    @GetMapping("/inventory/low-stock")
+    @GetMapping("/inventory")
     public String getLowStock(Model model, HttpSession session) {
 
         LowStockResponseDTO[] lowStock =

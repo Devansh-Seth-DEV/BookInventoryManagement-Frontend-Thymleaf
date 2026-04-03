@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Reviewer List</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
     <meta charset="UTF-8">
     <style>
         body {
@@ -74,7 +75,7 @@
     </style>
 </head>
 <body>
-
+<div th:replace="~{navbar :: navbar}"></div>
 <div class="container">
     <h2>Reviewer List</h2>
 

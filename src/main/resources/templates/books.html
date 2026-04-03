@@ -37,8 +37,10 @@
 					alt="Book Cover">
 
 				<h3 th:text="${book.title}"></h3>
-				<p th:text="${book.description}"></p>
 				<div class="book-details">
+					<div>
+						<b>Description:</b> <span th:text="${book.description}"></span>
+					</div>
 					<div>
 						<b>Category:</b> <span th:text="${book.categoryName}"></span>
 					</div>

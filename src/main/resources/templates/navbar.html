@@ -52,8 +52,9 @@
 
                 <!-- StoreOwner + Admin -->
                 <a th:if="${session.role == 'StoreOwner' or session.role == 'Admin'}"
-                   th:href="@{/inventory}">
-                   Inventory
+                   th:href="@{/inventory/low-stock}"
+                   class="book-link">
+                    Low Stock
                 </a>
 
                 <!-- Admin only -->

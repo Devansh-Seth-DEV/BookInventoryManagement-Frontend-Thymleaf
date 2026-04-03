@@ -10,11 +10,19 @@
 
 <div class="books-page">
 
-    <h2>All Books</h2>
+    <div class="books-header">
+        <h2>All Books</h2>
+        <!-- Admin: Add New Book button above the grid -->
+        <a th:if="${session.role == 'Admin'}" th:href="@{/admin/books/add}" class="btn-add-book">
+            ＋ Add New Book
+        </a>
+    </div>
 
     <!-- Flash Messages -->
     <div th:if="${cartSuccess}" class="flash-success" th:text="${cartSuccess}"></div>
     <div th:if="${cartError}"   class="flash-error"   th:text="${cartError}"></div>
+    <div th:if="${bookSuccess}" class="flash-success" th:text="${bookSuccess}"></div>
+    <div th:if="${bookError}"   class="flash-error"   th:text="${bookError}"></div>
 
     <!-- Search Bar -->
     <input type="text" id="searchBar" placeholder="Search books..."
@@ -32,8 +40,18 @@
             <p><b>Publisher:</b> <span th:text="${book.publisherName}"></span></p>
             <p><b>Edition:</b>   <span th:text="${book.edition}"></span></p>
 
-            <!-- Add to Cart form — hidden fields carry book data -->
-            <form th:action="@{/cart/add}" method="post">
+            <!-- ADMIN: Edit + Remove buttons -->
+            <div th:if="${session.role == 'Admin'}" class="admin-card-actions">
+                <a th:href="@{/admin/books/edit(isbn=${book.isbn})}" class="btn-edit-book">✏️ Edit</a>
+                <form th:action="@{/admin/books/delete}" method="post" style="display:inline"
+                      onsubmit="return confirm('Remove \'' + /*[[${book.title}]]*/ '' + '\' from inventory?')">
+                    <input type="hidden" name="isbn" th:value="${book.isbn}">
+                    <button type="submit" class="btn-remove-book">🗑 Remove</button>
+                </form>
+            </div>
+
+            <!-- NON-ADMIN: Add to Cart -->
+            <form th:if="${session.role != 'Admin'}" th:action="@{/cart/add}" method="post">
                 <input type="hidden" name="isbn"          th:value="${book.isbn}">
                 <input type="hidden" name="title"         th:value="${book.title}">
                 <input type="hidden" name="description"   th:value="${book.description}">
